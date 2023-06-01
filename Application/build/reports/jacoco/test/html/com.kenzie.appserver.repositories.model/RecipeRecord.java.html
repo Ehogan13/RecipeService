@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecipeRecord.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Application</a> &gt; <a href="index.source.html" class="el_package">com.kenzie.appserver.repositories.model</a> &gt; <span class="el_source">RecipeRecord.java</span></div><h1>RecipeRecord.java</h1><pre class="source lang-java linenums">package com.kenzie.appserver.repositories.model;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+
+import java.util.List;
+import java.util.Objects;
+
+@DynamoDBTable(tableName = &quot;Recipes&quot;)
+<span class="nc" id="L11">public class RecipeRecord {</span>
+
+    private String recipeId;
+    private String title;
+    private List&lt;String&gt; ingredients;
+    private List&lt;String&gt; steps;
+    private boolean isGlutenFree;
+    private boolean isDairyFree;
+    private boolean isEggFree;
+    private boolean isVegetarian;
+    private boolean isVegan;
+    private List&lt;Integer&gt; ratings;
+
+    @DynamoDBHashKey(attributeName = &quot;RecipeId&quot;)
+    public String getRecipeId(){
+<span class="nc" id="L26">        return this.recipeId;</span>
+    }
+
+    public void setRecipeId(String recipeId){
+<span class="nc" id="L30">        this.recipeId = recipeId;</span>
+<span class="nc" id="L31">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;Title&quot;)
+    public String getTitle(){
+<span class="nc" id="L35">        return this.title;</span>
+    }
+
+    public void setTitle(String title){
+<span class="nc" id="L39">        this.title = title;</span>
+<span class="nc" id="L40">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;Ingredients&quot;)
+    public List&lt;String&gt; getIngredients(){
+<span class="nc" id="L44">        return this.ingredients;</span>
+    }
+
+    public void setIngredients(List&lt;String&gt; ingredients){
+<span class="nc" id="L48">        this.ingredients = ingredients;</span>
+<span class="nc" id="L49">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;Steps&quot;)
+    public List&lt;String&gt; getSteps(){
+<span class="nc" id="L53">        return this.steps;</span>
+    }
+
+    public void setSteps(List&lt;String&gt; steps){
+<span class="nc" id="L57">        this.steps = steps;</span>
+<span class="nc" id="L58">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;IsGlutenFree&quot;)
+    public boolean getIsGlutenFree(){
+<span class="nc" id="L62">        return this.isGlutenFree;</span>
+    }
+
+    public void setIsGlutenFree(boolean isGlutenFree){
+<span class="nc" id="L66">        this.isGlutenFree = isGlutenFree;</span>
+<span class="nc" id="L67">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;IsDairyFree&quot;)
+    public boolean getIsDairyFree(){
+<span class="nc" id="L71">        return this.isDairyFree;</span>
+    }
+
+    public void setIsDairyFree(boolean isDairyFree){
+<span class="nc" id="L75">        this.isDairyFree = isDairyFree;</span>
+<span class="nc" id="L76">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;IsEggFree&quot;)
+    public boolean getIsEggFree(){
+<span class="nc" id="L80">        return this.isEggFree;</span>
+    }
+
+    public void setIsEggFree(boolean isEggFree){
+<span class="nc" id="L84">        this.isEggFree = isEggFree;</span>
+<span class="nc" id="L85">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;IsVegetarian&quot;)
+    public boolean getIsVegetarian(){
+<span class="nc" id="L89">        return this.isVegetarian;</span>
+    }
+
+    public void setIsVegetarian(boolean isVegetarian){
+<span class="nc" id="L93">        this.isVegetarian = isVegetarian;</span>
+<span class="nc" id="L94">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;IsVegan&quot;)
+    public boolean getIsVegan(){
+<span class="nc" id="L98">        return this.isVegan;</span>
+    }
+
+    public void setIsVegan(boolean isVegan){
+<span class="nc" id="L102">        this.isVegan = isVegan;</span>
+<span class="nc" id="L103">    }</span>
+
+    @DynamoDBAttribute(attributeName = &quot;Ratings&quot;)
+    public List&lt;Integer&gt; getRatings(){
+<span class="nc" id="L107">        return this.ratings;</span>
+    }
+
+    public void setRatings(List&lt;Integer&gt; ratings){
+<span class="nc" id="L111">        this.ratings = ratings;</span>
+<span class="nc" id="L112">    }</span>
+
+    @Override
+    public boolean equals(Object o) {
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        if (this == o) return true;</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if (!(o instanceof RecipeRecord)) return false;</span>
+<span class="nc" id="L118">        RecipeRecord that = (RecipeRecord) o;</span>
+<span class="nc bnc" id="L119" title="All 20 branches missed.">        return isGlutenFree == that.isGlutenFree &amp;&amp; isDairyFree == that.isDairyFree &amp;&amp; isEggFree == that.isEggFree &amp;&amp; isVegetarian == that.isVegetarian &amp;&amp; isVegan == that.isVegan &amp;&amp; getRecipeId().equals(that.getRecipeId()) &amp;&amp; getTitle().equals(that.getTitle()) &amp;&amp; getIngredients().equals(that.getIngredients()) &amp;&amp; getSteps().equals(that.getSteps()) &amp;&amp; getRatings().equals(that.getRatings());</span>
+    }
+
+    @Override
+    public int hashCode() {
+<span class="nc" id="L124">        return Objects.hash(getRecipeId(), getTitle(), getIngredients(), getSteps(), isGlutenFree, isDairyFree, isEggFree, isVegetarian, isVegan, getRatings());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

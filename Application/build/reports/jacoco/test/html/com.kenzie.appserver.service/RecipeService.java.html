@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecipeService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Application</a> &gt; <a href="index.source.html" class="el_package">com.kenzie.appserver.service</a> &gt; <span class="el_source">RecipeService.java</span></div><h1>RecipeService.java</h1><pre class="source lang-java linenums">package com.kenzie.appserver.service;
+
+import com.kenzie.appserver.config.CacheStore;
+import com.kenzie.appserver.controller.model.DietaryRestrictionInfoRequest;
+import com.kenzie.appserver.controller.model.RecipeCreateRequest;
+import com.kenzie.appserver.controller.model.RecipeUpdateRequest;
+import com.kenzie.appserver.repositories.RecipeRepository;
+import com.kenzie.appserver.service.model.Recipe;
+import com.kenzie.capstone.service.client.LambdaRecipeServiceClient;
+import com.kenzie.capstone.service.model.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+public class RecipeService {
+    private RecipeRepository recipeRepository;
+    private LambdaRecipeServiceClient lambdaRecipeServiceClient;
+
+    private CacheStore cache;
+
+<span class="fc" id="L25">    public RecipeService(RecipeRepository recipeRepository, LambdaRecipeServiceClient lambdaRecipeServiceClient, CacheStore cache) {</span>
+<span class="fc" id="L26">        this.recipeRepository = recipeRepository;</span>
+<span class="fc" id="L27">        this.lambdaRecipeServiceClient = lambdaRecipeServiceClient;</span>
+<span class="fc" id="L28">        this.cache = cache;</span>
+<span class="fc" id="L29">    }</span>
+
+    public Recipe findById(String recipeId) {
+
+<span class="fc bfc" id="L33" title="All 4 branches covered.">        if (recipeId == null || recipeId.length() == 0) {</span>
+<span class="fc" id="L34">            throw new IllegalArgumentException(&quot;Recipe Id is not valid&quot;);</span>
+        }
+
+        //get it from the cache if it exists
+<span class="fc" id="L38">        Recipe cachedRecipe = cache.get(recipeId);</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">        if (cachedRecipe != null){</span>
+<span class="fc" id="L40">            return cachedRecipe;</span>
+        }
+
+        // getting data from the lambda
+<span class="fc" id="L44">        RecipeData recipeFromLambda = lambdaRecipeServiceClient.getRecipeData(recipeId);</span>
+
+<span class="fc" id="L46">        return new Recipe(recipeFromLambda.getRecipeId(),</span>
+<span class="fc" id="L47">                recipeFromLambda.getTitle(), recipeFromLambda.getIngredients(),</span>
+<span class="fc" id="L48">                recipeFromLambda.getSteps(), recipeFromLambda.isGlutenFree(),</span>
+<span class="fc" id="L49">                recipeFromLambda.isDairyFree(), recipeFromLambda.isEggFree(),</span>
+<span class="fc" id="L50">                recipeFromLambda.isVegetarian(), recipeFromLambda.isVegan(), recipeFromLambda.getRatings());</span>
+    }
+
+    public Recipe addNewRecipe(RecipeCreateRequest recipeCreateRequest) {
+
+<span class="fc bfc" id="L55" title="All 4 branches covered.">        if (recipeCreateRequest.getTitle() == null || recipeCreateRequest.getTitle().length() == 0) {</span>
+<span class="fc" id="L56">            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, &quot;Invalid Recipe&quot;);</span>
+        }
+
+        //convert RecipeCreateRequest to Recipe Request
+<span class="fc" id="L60">        List&lt;Integer&gt; ratings = new ArrayList&lt;&gt; ();</span>
+<span class="fc" id="L61">        RecipeRequest recipeRequest = new RecipeRequest(recipeCreateRequest.getTitle(),</span>
+<span class="fc" id="L62">                recipeCreateRequest.getIngredients(), recipeCreateRequest.getSteps(), recipeCreateRequest.isGlutenFree(),</span>
+<span class="fc" id="L63">                recipeCreateRequest.isDairyFree(), recipeCreateRequest.isEggFree(), recipeCreateRequest.isVegetarian(),</span>
+<span class="fc" id="L64">                recipeCreateRequest.isVegan(), ratings);</span>
+
+        // sending data to Lambda
+<span class="fc" id="L67">        RecipeResponse recipeFromLambda = lambdaRecipeServiceClient.setRecipeData(recipeRequest);</span>
+
+<span class="fc" id="L69">        return new Recipe(recipeFromLambda.getRecipeId(),</span>
+<span class="fc" id="L70">                            recipeFromLambda.getTitle(), recipeFromLambda.getIngredients(),</span>
+<span class="fc" id="L71">                            recipeFromLambda.getSteps(), recipeFromLambda.isGlutenFree(),</span>
+<span class="fc" id="L72">                            recipeFromLambda.isDairyFree(), recipeFromLambda.isEggFree(),</span>
+<span class="fc" id="L73">                            recipeFromLambda.isVegetarian(), recipeFromLambda.isVegan(), recipeFromLambda.getRatings());</span>
+    }
+
+    public List&lt;Recipe&gt; findByDietaryRestriction(DietaryRestrictionInfoRequest dietaryRestrictionInfoRequest){
+
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">        if (dietaryRestrictionInfoRequest == null) {</span>
+<span class="nc" id="L79">            throw new IllegalArgumentException(&quot;Invalid Dietary Restrictions&quot;);</span>
+        }
+
+        //getting it from the lambda
+<span class="fc" id="L83">        DietaryRestrictionData data = dietaryRestrictionInfoRequestToData(dietaryRestrictionInfoRequest);</span>
+<span class="fc" id="L84">        List&lt;RecipeData&gt; recipesFromLambda = lambdaRecipeServiceClient.getRecipesByDietaryRestriction(data);</span>
+
+        //convert and also cache
+<span class="fc" id="L87">        List&lt;Recipe&gt; recipes = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        for (RecipeData recipeData : recipesFromLambda){</span>
+<span class="fc" id="L89">            Recipe recipe = recipeDataToRecipe(recipeData);</span>
+<span class="fc" id="L90">            recipes.add(recipe);</span>
+<span class="fc" id="L91">            cache.add(recipe.getRecipeId(), recipe);</span>
+<span class="fc" id="L92">        }</span>
+
+        //return recipes;
+<span class="fc" id="L95">        return recipes;</span>
+    }
+
+    public Recipe updateRecipe(RecipeUpdateRequest recipeUpdateRequest){
+
+<span class="fc bfc" id="L100" title="All 4 branches covered.">        if (recipeUpdateRequest.getRecipeId() == null || recipeUpdateRequest.getRecipeId().length() == 0) {</span>
+<span class="fc" id="L101">            throw new IllegalArgumentException(&quot;Invalid Recipe Id&quot;);</span>
+        }
+
+<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (recipeUpdateRequest.getNewRating() == null ||</span>
+<span class="pc bpc" id="L105" title="1 of 4 branches missed.">                recipeUpdateRequest.getNewRating() &lt; 0 || recipeUpdateRequest.getNewRating() &gt; 5) {</span>
+<span class="fc" id="L106">            throw new IllegalArgumentException(&quot;Invalid Rating&quot;);</span>
+        }
+
+<span class="fc" id="L109">        Recipe recipe = cache.get(recipeUpdateRequest.getRecipeId());</span>
+
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">        if (recipe == null){</span>
+<span class="nc" id="L112">            recipe = findById(recipeUpdateRequest.getRecipeId());</span>
+        }
+
+<span class="fc" id="L115">        cache.evict(recipeUpdateRequest.getRecipeId());</span>
+
+<span class="fc" id="L117">        RecipeUpdateRequestLambda recipeUpdateRequestLambda = new RecipeUpdateRequestLambda();</span>
+<span class="fc" id="L118">        recipeUpdateRequestLambda.setRecipeId(recipeUpdateRequest.getRecipeId());</span>
+<span class="fc" id="L119">        recipeUpdateRequestLambda.setTitle(recipe.getTitle());</span>
+<span class="fc" id="L120">        recipeUpdateRequestLambda.setIngredients(recipe.getIngredients());</span>
+<span class="fc" id="L121">        recipeUpdateRequestLambda.setSteps(recipe.getSteps());</span>
+<span class="fc" id="L122">        recipeUpdateRequestLambda.setIsGlutenFree(recipe.isGlutenFree());</span>
+<span class="fc" id="L123">        recipeUpdateRequestLambda.setIsDairyFree(recipe.isDairyFree());</span>
+<span class="fc" id="L124">        recipeUpdateRequestLambda.setIsEggFree(recipe.isEggFree());</span>
+<span class="fc" id="L125">        recipeUpdateRequestLambda.setIsVegetarian(recipe.isVegetarian());</span>
+<span class="fc" id="L126">        recipeUpdateRequestLambda.setIsVegan(recipe.isVegan());</span>
+<span class="fc" id="L127">        recipeUpdateRequestLambda.setRatings(recipe.getRatings());</span>
+<span class="fc" id="L128">        recipeUpdateRequestLambda.addRating(recipeUpdateRequest.getNewRating());</span>
+
+<span class="fc" id="L130">        RecipeResponse recipeFromLambda = lambdaRecipeServiceClient.updateRecipeData(recipeUpdateRequestLambda);</span>
+
+<span class="fc" id="L132">        return new Recipe(recipeFromLambda.getRecipeId(),</span>
+<span class="fc" id="L133">                recipeFromLambda.getTitle(), recipeFromLambda.getIngredients(),</span>
+<span class="fc" id="L134">                recipeFromLambda.getSteps(), recipeFromLambda.isGlutenFree(),</span>
+<span class="fc" id="L135">                recipeFromLambda.isDairyFree(), recipeFromLambda.isEggFree(),</span>
+<span class="fc" id="L136">                recipeFromLambda.isVegetarian(), recipeFromLambda.isVegan(), recipeFromLambda.getRatings());</span>
+    }
+
+    public void deleteRecipe(String recipeId) {
+
+<span class="pc bpc" id="L141" title="1 of 4 branches missed.">        if (recipeId == null || recipeId.length() == 0) {</span>
+<span class="fc" id="L142">            throw new IllegalArgumentException(&quot;Recipe Id is not valid&quot;);</span>
+        }
+
+<span class="fc" id="L145">        lambdaRecipeServiceClient.deleteById(recipeId);</span>
+
+<span class="fc" id="L147">        cache.evict(recipeId);</span>
+<span class="fc" id="L148">    }</span>
+
+    //helper methods
+
+    private Recipe recipeDataToRecipe(RecipeData data){
+
+<span class="fc" id="L154">        return new Recipe(data.getRecipeId(),</span>
+<span class="fc" id="L155">                data.getTitle(), data.getIngredients(),</span>
+<span class="fc" id="L156">                data.getSteps(), data.isGlutenFree(),</span>
+<span class="fc" id="L157">                data.isDairyFree(), data.isEggFree(),</span>
+<span class="fc" id="L158">                data.isVegetarian(), data.isVegan(), data.getRatings());</span>
+    }
+
+    private DietaryRestrictionData dietaryRestrictionInfoRequestToData(DietaryRestrictionInfoRequest request){
+
+<span class="fc" id="L163">        DietaryRestrictionData data = new DietaryRestrictionData();</span>
+<span class="fc" id="L164">        data.setIsGlutenFree(request.isGlutenFree());</span>
+<span class="fc" id="L165">        data.setIsDairyFree(request.isDairyFree());</span>
+<span class="fc" id="L166">        data.setIsEggFree(request.isEggFree());</span>
+<span class="fc" id="L167">        data.setIsVegetarian(request.isVegetarian());</span>
+<span class="fc" id="L168">        data.setIsVegan(request.isVegan());</span>
+
+<span class="fc" id="L170">        return data;</span>
+    }
+
+}
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

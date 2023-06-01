@@ -1,0 +1,10 @@
+com/kenzie/capstone/service/model/DietaryRestrictionData.java
+ com.kenzie.capstone.service.model.DietaryRestrictionData
+com/kenzie/capstone/service/model/RecipeResponse.java
+ com.kenzie.capstone.service.model.RecipeResponse
+com/kenzie/capstone/service/model/RecipeUpdateRequestLambda.java
+ com.kenzie.capstone.service.model.RecipeUpdateRequestLambda
+com/kenzie/capstone/service/model/RecipeData.java
+ com.kenzie.capstone.service.model.RecipeData
+com/kenzie/capstone/service/model/RecipeRequest.java
+ com.kenzie.capstone.service.model.RecipeRequest

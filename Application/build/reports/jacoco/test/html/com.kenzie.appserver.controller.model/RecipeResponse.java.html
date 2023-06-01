@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecipeResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Application</a> &gt; <a href="index.source.html" class="el_package">com.kenzie.appserver.controller.model</a> &gt; <span class="el_source">RecipeResponse.java</span></div><h1>RecipeResponse.java</h1><pre class="source lang-java linenums">package com.kenzie.appserver.controller.model;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.util.List;
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+@JsonIgnoreProperties(ignoreUnknown = true)
+<span class="nc" id="L11">public class RecipeResponse {</span>
+
+    @JsonProperty(&quot;recipeId&quot;)
+    private String recipeId;
+
+    @JsonProperty(&quot;title&quot;)
+    private String title;
+
+    @JsonProperty(&quot;ingredients&quot;)
+    private List&lt;String&gt; ingredients;
+
+    @JsonProperty(&quot;steps&quot;)
+    private List&lt;String&gt; steps;
+
+    @JsonProperty(&quot;isGlutenFree&quot;)
+    private boolean isGlutenFree;
+
+    @JsonProperty(&quot;isDairyFree&quot;)
+    private boolean isDairyFree;
+
+    @JsonProperty(&quot;isEggFree&quot;)
+    private boolean isEggFree;
+
+    @JsonProperty(&quot;isVegetarian&quot;)
+    private boolean isVegetarian;
+
+    @JsonProperty(&quot;isVegan&quot;)
+    private boolean isVegan;
+
+    @JsonProperty(&quot;ratings&quot;)
+    private List&lt;Integer&gt; ratings;
+
+    @JsonProperty(&quot;averageRating&quot;)
+    private Double averageRating;
+
+    public String getRecipeId() {
+<span class="nc" id="L47">        return recipeId;</span>
+    }
+
+    public void setRecipeId(String recipeId) {
+<span class="nc" id="L51">        this.recipeId = recipeId;</span>
+<span class="nc" id="L52">    }</span>
+
+    public String getTitle() {
+<span class="nc" id="L55">        return title;</span>
+    }
+
+    public void setTitle(String title) {
+<span class="nc" id="L59">        this.title = title;</span>
+<span class="nc" id="L60">    }</span>
+
+    public List&lt;String&gt; getIngredients() {
+<span class="nc" id="L63">        return ingredients;</span>
+    }
+
+    public void setIngredients(List&lt;String&gt; ingredients) {
+<span class="nc" id="L67">        this.ingredients = ingredients;</span>
+<span class="nc" id="L68">    }</span>
+
+    public List&lt;String&gt; getSteps() {
+<span class="nc" id="L71">        return steps;</span>
+    }
+
+    public void setSteps(List&lt;String&gt; steps) {
+<span class="nc" id="L75">        this.steps = steps;</span>
+<span class="nc" id="L76">    }</span>
+
+    public boolean isGlutenFree() {
+<span class="nc" id="L79">        return isGlutenFree;</span>
+    }
+
+    public void setIsGlutenFree(boolean glutenFree) {
+<span class="nc" id="L83">        isGlutenFree = glutenFree;</span>
+<span class="nc" id="L84">    }</span>
+
+    public boolean isDairyFree() {
+<span class="nc" id="L87">        return isDairyFree;</span>
+    }
+
+    public void setIsDairyFree(boolean dairyFree) {
+<span class="nc" id="L91">        isDairyFree = dairyFree;</span>
+<span class="nc" id="L92">    }</span>
+
+    public boolean isEggFree() {
+<span class="nc" id="L95">        return isEggFree;</span>
+    }
+
+    public void setIsEggFree(boolean eggFree) {
+<span class="nc" id="L99">        isEggFree = eggFree;</span>
+<span class="nc" id="L100">    }</span>
+
+    public boolean isVegetarian() {
+<span class="nc" id="L103">        return isVegetarian;</span>
+    }
+
+    public void setIsVegetarian(boolean vegetarian) {
+<span class="nc" id="L107">        isVegetarian = vegetarian;</span>
+<span class="nc" id="L108">    }</span>
+
+    public boolean isVegan() {
+<span class="nc" id="L111">        return isVegan;</span>
+    }
+
+    public void setIsVegan(boolean vegan) {
+<span class="nc" id="L115">        isVegan = vegan;</span>
+<span class="nc" id="L116">    }</span>
+
+    public List&lt;Integer&gt; getRatings() {
+<span class="nc" id="L119">        return ratings;</span>
+    }
+
+    public void setRatings(List&lt;Integer&gt; ratings) {
+<span class="nc" id="L123">        this.ratings = ratings;</span>
+<span class="nc" id="L124">    }</span>
+
+    public double getAverageRating(){
+<span class="nc" id="L127">        return ratings.stream()</span>
+<span class="nc" id="L128">                .mapToDouble(a -&gt; a)</span>
+<span class="nc" id="L129">                .average()</span>
+<span class="nc" id="L130">                .orElse(0.0);</span>
+    }
+
+    public void setAverageRating() {
+<span class="nc" id="L134">        this.averageRating = Math.ceil(getAverageRating());</span>
+<span class="nc" id="L135">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

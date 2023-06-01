@@ -1,0 +1,246 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+   <head>
+      <title>SpotBugs Report</title>
+      <style type="text/css">
+		.tablerow0 {
+			background: #EEEEEE;
+		}
+
+		.tablerow1 {
+			background: white;
+		}
+
+		.detailrow0 {
+			background: #EEEEEE;
+		}
+
+		.detailrow1 {
+			background: white;
+		}
+
+		.tableheader {
+			background: #b9b9fe;
+			font-size: larger;
+		}
+
+		.tablerow0:hover, .tablerow1:hover {
+			background: #aaffaa;
+		}
+
+		.priority-1 {
+				color: red;
+				font-weight: bold;
+		}
+		.priority-2 {
+				color: orange;
+				font-weight: bold;
+		}
+		.priority-3 {
+				color: green;
+				font-weight: bold;
+		}
+		.priority-4 {
+				color: blue;
+				font-weight: bold;
+		}
+		</style>
+      <script type="text/javascript">
+			function toggleRow(elid) {
+				if (document.getElementById) {
+					element = document.getElementById(elid);
+					if (element) {
+						if (element.style.display == 'none') {
+							element.style.display = 'block';
+							//window.status = 'Toggle on!';
+						} else {
+							element.style.display = 'none';
+							//window.status = 'Toggle off!';
+						}
+					}
+				}
+			}
+		</script>
+   </head>
+   <body>
+      <h1>
+         <a href="https://spotbugs.github.io/">SpotBugs</a> Report</h1>
+      <h2>Project Information</h2>
+      <p>Project: 
+		ServiceLambdaModel (spotbugsMain)</p>
+      <p>SpotBugs version: 4.2.1</p>
+      <p>Code analyzed:</p>
+      <ul>
+         <li>/Users/lizhogan/kenzie/ata-capstone-project-NathanHodo/ServiceLambdaModel/build/classes/java/main/com/kenzie/capstone/service/model/ExampleData.class</li>
+         <li>/Users/lizhogan/kenzie/ata-capstone-project-NathanHodo/ServiceLambdaModel/build/classes/java/main/com/kenzie/capstone/service/model/RecipeResponse.class</li>
+         <li>/Users/lizhogan/kenzie/ata-capstone-project-NathanHodo/ServiceLambdaModel/build/classes/java/main/com/kenzie/capstone/service/model/RecipeData.class</li>
+         <li>/Users/lizhogan/kenzie/ata-capstone-project-NathanHodo/ServiceLambdaModel/build/classes/java/main/com/kenzie/capstone/service/model/RecipeRequest.class</li>
+      </ul>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>Metrics</h2>
+      <p>257 lines of code analyzed,
+	in 4 classes, 
+	in 1 packages.</p>
+      <table width="500" cellpadding="5" cellspacing="2">
+         <tr class="tableheader">
+            <th align="left">Metric</th>
+            <th align="right">Total</th>
+            <th align="right">Density*</th>
+         </tr>
+         <tr class="tablerow0">
+            <td>High Priority Warnings</td>
+            <td align="right"/>
+            <td align="right">0.00</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>Medium Priority Warnings</td>
+            <td align="right">4</td>
+            <td align="right">15.56</td>
+         </tr>
+         <tr class="$totalClass">
+            <td>
+               <b>Total Warnings</b>
+            </td>
+            <td align="right">
+               <b>4</b>
+            </td>
+            <td align="right">
+               <b>15.56</b>
+            </td>
+         </tr>
+      </table>
+      <p>
+         <i>(* Defects per Thousand lines of non-commenting source statements)</i>
+      </p>
+      <p>
+         <br/>
+         <br/>
+      </p>
+      <h2>Contents</h2>
+      <ul>
+         <li>
+            <a href="#Warnings_CORRECTNESS">Correctness Warnings</a>
+         </li>
+         <li>
+            <a href="#Details">Details</a>
+         </li>
+      </ul>
+      <h1>Summary</h1>
+      <table width="500" cellpadding="5" cellspacing="2">
+         <tr class="tableheader">
+            <th align="left">Warning Type</th>
+            <th align="right">Number</th>
+         </tr>
+         <tr class="tablerow0">
+            <td>
+               <a href="#Warnings_CORRECTNESS">Correctness Warnings</a>
+            </td>
+            <td align="right">4</td>
+         </tr>
+         <tr class="tablerow1">
+            <td>
+               <b>Total</b>
+            </td>
+            <td align="right">
+               <b>4</b>
+            </td>
+         </tr>
+      </table>
+      <h1>Warnings</h1>
+      <p>Click on a warning row to see full context information.</p>
+      <h2>
+         <a name="Warnings_CORRECTNESS">Correctness Warnings</a>
+      </h2>
+      <table class="warningtable" width="100%" cellspacing="0">
+         <tr class="tableheader">
+            <th align="left">Code</th>
+            <th align="left">Warning</th>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e44');">
+            <td>
+               <span class="priority-2">SA</span>
+            </td>
+            <td>Self assignment of field RecipeRequest.isVegan in new com.kenzie.capstone.service.model.RecipeRequest(String, List, List, boolean, boolean, boolean, boolean, List)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e44" style="display: none;">
+                  <a href="#SA_FIELD_SELF_ASSIGNMENT">Bug type SA_FIELD_SELF_ASSIGNMENT (click for details)</a>
+                  <br/>In class com.kenzie.capstone.service.model.RecipeRequest<br/>In method new com.kenzie.capstone.service.model.RecipeRequest(String, List, List, boolean, boolean, boolean, boolean, List)<br/>Field com.kenzie.capstone.service.model.RecipeRequest.isVegan<br/>At RecipeRequest.java:[line 33]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e76');">
+            <td>
+               <span class="priority-2">SA</span>
+            </td>
+            <td>Self assignment of field RecipeResponse.isVegan in new com.kenzie.capstone.service.model.RecipeResponse(String, String, List, List, boolean, boolean, boolean, boolean, List)</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e76" style="display: none;">
+                  <a href="#SA_FIELD_SELF_ASSIGNMENT">Bug type SA_FIELD_SELF_ASSIGNMENT (click for details)</a>
+                  <br/>In class com.kenzie.capstone.service.model.RecipeResponse<br/>In method new com.kenzie.capstone.service.model.RecipeResponse(String, String, List, List, boolean, boolean, boolean, boolean, List)<br/>Field com.kenzie.capstone.service.model.RecipeResponse.isVegan<br/>At RecipeResponse.java:[line 34]</p>
+            </td>
+         </tr>
+         <tr class="tablerow1" onclick="toggleRow('d1e60');">
+            <td>
+               <span class="priority-2">UR</span>
+            </td>
+            <td>Uninitialized read of isVegan in new com.kenzie.capstone.service.model.RecipeRequest(String, List, List, boolean, boolean, boolean, boolean, List)</td>
+         </tr>
+         <tr class="detailrow1">
+            <td/>
+            <td>
+               <p id="d1e60" style="display: none;">
+                  <a href="#UR_UNINIT_READ">Bug type UR_UNINIT_READ (click for details)</a>
+                  <br/>In class com.kenzie.capstone.service.model.RecipeRequest<br/>In method new com.kenzie.capstone.service.model.RecipeRequest(String, List, List, boolean, boolean, boolean, boolean, List)<br/>Field com.kenzie.capstone.service.model.RecipeRequest.isVegan<br/>At RecipeRequest.java:[line 33]</p>
+            </td>
+         </tr>
+         <tr class="tablerow0" onclick="toggleRow('d1e92');">
+            <td>
+               <span class="priority-2">UR</span>
+            </td>
+            <td>Uninitialized read of isVegan in new com.kenzie.capstone.service.model.RecipeResponse(String, String, List, List, boolean, boolean, boolean, boolean, List)</td>
+         </tr>
+         <tr class="detailrow0">
+            <td/>
+            <td>
+               <p id="d1e92" style="display: none;">
+                  <a href="#UR_UNINIT_READ">Bug type UR_UNINIT_READ (click for details)</a>
+                  <br/>In class com.kenzie.capstone.service.model.RecipeResponse<br/>In method new com.kenzie.capstone.service.model.RecipeResponse(String, String, List, List, boolean, boolean, boolean, boolean, List)<br/>Field com.kenzie.capstone.service.model.RecipeResponse.isVegan<br/>At RecipeResponse.java:[line 34]</p>
+            </td>
+         </tr>
+      </table>
+      <h1>
+         <a name="Details">Details</a>
+      </h1>
+      <h2>
+         <a name="SA_FIELD_SELF_ASSIGNMENT">SA_FIELD_SELF_ASSIGNMENT: Self assignment of field</a>
+      </h2>
+
+<p> This method contains a self assignment of a field; e.g.
+</p>
+<pre><code>int x;
+public void foo() {
+    x = x;
+}
+</code></pre>
+<p>Such assignments are useless, and may indicate a logic error or typo.</p>
+
+    <h2>
+         <a name="UR_UNINIT_READ">UR_UNINIT_READ: Uninitialized read of field in constructor</a>
+      </h2>
+
+  <p> This constructor reads a field which has not yet been assigned a value.&nbsp;
+  This is often caused when the programmer mistakenly uses the field instead
+  of one of the constructor's parameters.</p>
+
+    </body>
+</html>

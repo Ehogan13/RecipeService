@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecipeDao.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServiceLambda</a> &gt; <a href="index.source.html" class="el_package">com.kenzie.capstone.service.dao</a> &gt; <span class="el_source">RecipeDao.java</span></div><h1>RecipeDao.java</h1><pre class="source lang-java linenums">package com.kenzie.capstone.service.dao;
+
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBSaveExpression;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ConditionalCheckFailedException;
+import com.amazonaws.services.dynamodbv2.model.ExpectedAttributeValue;
+import com.google.common.collect.ImmutableMap;
+import com.kenzie.capstone.service.model.DietaryRestrictionData;
+import com.kenzie.capstone.service.model.RecipeData;
+import com.kenzie.capstone.service.model.RecipeRecord;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.*;
+
+
+public class RecipeDao {
+
+<span class="fc" id="L22">    static final Logger log = LogManager.getLogger();</span>
+    private DynamoDBMapper mapper;
+
+<span class="nc" id="L25">    public RecipeDao(DynamoDBMapper mapper){</span>
+<span class="nc" id="L26">        this.mapper = mapper;</span>
+<span class="nc" id="L27">    }</span>
+
+    public RecipeData storeRecipeData(RecipeData recipeData){
+        try {
+<span class="nc" id="L31">            mapper.save(recipeData, new DynamoDBSaveExpression()</span>
+<span class="nc" id="L32">                    .withExpected(ImmutableMap.of(</span>
+                            &quot;recipeId&quot;,
+<span class="nc" id="L34">                            new ExpectedAttributeValue().withExists(false)</span>
+                    )));
+<span class="nc" id="L36">        } catch (ConditionalCheckFailedException e){</span>
+<span class="nc" id="L37">            throw new IllegalArgumentException(&quot;recipeId has already been used&quot;);</span>
+<span class="nc" id="L38">        }</span>
+<span class="nc" id="L39">        return recipeData;</span>
+    }
+
+    public List&lt;RecipeRecord&gt; getRecipeData(String recipeId) {
+<span class="nc" id="L43">        RecipeRecord recipeRecord = new RecipeRecord();</span>
+<span class="nc" id="L44">        recipeRecord.setRecipeId(recipeId);</span>
+
+<span class="nc" id="L46">        DynamoDBQueryExpression&lt;RecipeRecord&gt; queryExpression = new DynamoDBQueryExpression&lt;RecipeRecord&gt;()</span>
+<span class="nc" id="L47">                .withHashKeyValues(recipeRecord)</span>
+<span class="nc" id="L48">                .withConsistentRead(false);</span>
+
+<span class="nc" id="L50">        return mapper.query(RecipeRecord.class, queryExpression);</span>
+    }
+
+    public RecipeRecord setRecipeData(RecipeRecord recipeRecord) {
+
+        try {
+<span class="nc" id="L56">            mapper.save(recipeRecord, new DynamoDBSaveExpression()</span>
+<span class="nc" id="L57">                    .withExpected(ImmutableMap.of(</span>
+                            &quot;recipeId&quot;,
+<span class="nc" id="L59">                            new ExpectedAttributeValue().withExists(false)</span>
+                    )));
+<span class="nc" id="L61">        } catch (ConditionalCheckFailedException e) {</span>
+<span class="nc" id="L62">            throw new IllegalArgumentException(&quot;recipeId already exists&quot;);</span>
+<span class="nc" id="L63">        }</span>
+
+<span class="nc" id="L65">        return recipeRecord;</span>
+    }
+
+    public RecipeRecord updateRecipeData(RecipeRecord recipeRecord){
+
+        try {
+<span class="nc" id="L71">            mapper.save(recipeRecord, new DynamoDBSaveExpression()</span>
+<span class="nc" id="L72">                    .withExpected(ImmutableMap.of(</span>
+                            &quot;recipeId&quot;,
+<span class="nc" id="L74">                                new ExpectedAttributeValue().withValue(new AttributeValue(recipeRecord.getRecipeId())).withExists(true)</span>
+                    )));
+<span class="nc" id="L76">        } catch (ConditionalCheckFailedException e) {</span>
+<span class="nc" id="L77">            throw new IllegalArgumentException(&quot;recipeId does not exist&quot;);</span>
+<span class="nc" id="L78">        }</span>
+
+<span class="nc" id="L80">        return recipeRecord;</span>
+    }
+
+    public List&lt;RecipeRecord&gt; getRecipesByDietaryRestriction(DietaryRestrictionData dietaryRestrictionInfo){
+
+        try {
+<span class="nc" id="L86">            Map&lt;String, AttributeValue&gt; valueMap = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L87">            DynamoDBScanExpression scanExpression = new DynamoDBScanExpression();</span>
+<span class="nc" id="L88">            StringBuilder sb = new StringBuilder();</span>
+<span class="nc" id="L89">            List&lt;String&gt; filterExpressions = new ArrayList&lt;&gt;();</span>
+
+<span class="nc bnc" id="L91" title="All 2 branches missed.">            if (!dietaryRestrictionInfo.isGlutenFree() &amp;&amp;</span>
+<span class="nc bnc" id="L92" title="All 2 branches missed.">                    !dietaryRestrictionInfo.isDairyFree() &amp;&amp;</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">                    !dietaryRestrictionInfo.isEggFree() &amp;&amp;</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">                    !dietaryRestrictionInfo.isVegetarian() &amp;&amp;</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">                    !dietaryRestrictionInfo.isVegan()){</span>
+                try {
+<span class="nc" id="L97">                    PaginatedScanList&lt;RecipeRecord&gt; recipeList = mapper.scan(RecipeRecord.class, scanExpression);</span>
+<span class="nc" id="L98">                    return recipeList;</span>
+<span class="nc" id="L99">                } catch (Exception e) {</span>
+<span class="nc" id="L100">                    log.error(e.getMessage());</span>
+<span class="nc" id="L101">                    throw new IllegalArgumentException(&quot;can't get all the recipes&quot;);</span>
+                }
+            }
+
+<span class="nc bnc" id="L105" title="All 2 branches missed.">            if (dietaryRestrictionInfo.isGlutenFree()) {</span>
+<span class="nc" id="L106">                valueMap.put(&quot;:glutenFree&quot;, new AttributeValue().withN(String.valueOf(1)));</span>
+<span class="nc" id="L107">                filterExpressions.add(&quot;isGlutenFree = :glutenFree&quot;);</span>
+            }
+<span class="nc bnc" id="L109" title="All 2 branches missed.">            if (dietaryRestrictionInfo.isDairyFree()) {</span>
+<span class="nc" id="L110">                valueMap.put(&quot;:dairyFree&quot;, new AttributeValue().withN(String.valueOf(1)));</span>
+<span class="nc" id="L111">                filterExpressions.add(&quot;isDairyFree = :dairyFree&quot;);</span>
+            }
+<span class="nc bnc" id="L113" title="All 2 branches missed.">            if (dietaryRestrictionInfo.isEggFree()) {</span>
+<span class="nc" id="L114">                valueMap.put(&quot;:eggFree&quot;, new AttributeValue().withN(String.valueOf(1)));</span>
+<span class="nc" id="L115">                filterExpressions.add(&quot;isEggFree = :eggFree&quot;);</span>
+            }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">            if (dietaryRestrictionInfo.isVegetarian()) {</span>
+<span class="nc" id="L118">                valueMap.put(&quot;:vegetarian&quot;, new AttributeValue().withN(String.valueOf(1)));</span>
+<span class="nc" id="L119">                filterExpressions.add(&quot;isVegetarian = :vegetarian&quot;);</span>
+            }
+<span class="nc bnc" id="L121" title="All 2 branches missed.">            if (dietaryRestrictionInfo.isVegan()) {</span>
+<span class="nc" id="L122">                valueMap.put(&quot;:vegan&quot;, new AttributeValue().withN(String.valueOf(1)));</span>
+<span class="nc" id="L123">                filterExpressions.add(&quot;isVegan = :vegan&quot;);</span>
+            }
+
+<span class="nc bnc" id="L126" title="All 2 branches missed.">            for (int i = 0; i &lt; filterExpressions.size(); i++){</span>
+<span class="nc bnc" id="L127" title="All 2 branches missed.">                if (i &lt; filterExpressions.size() - 1){</span>
+<span class="nc" id="L128">                    sb.append(filterExpressions.get(i)).append(&quot; AND &quot;);</span>
+                } else {
+<span class="nc" id="L130">                    sb.append(filterExpressions.get(i));</span>
+                }
+            }
+
+<span class="nc" id="L134">            scanExpression.withFilterExpression(sb.toString());</span>
+<span class="nc" id="L135">            scanExpression.withExpressionAttributeValues(valueMap);</span>
+
+<span class="nc" id="L137">            PaginatedScanList&lt;RecipeRecord&gt; recipeList = mapper.scan(RecipeRecord.class, scanExpression);</span>
+
+<span class="nc" id="L139">            return recipeList;</span>
+
+<span class="nc" id="L141">        } catch (Exception e) {</span>
+<span class="nc" id="L142">            log.error(e.getMessage());</span>
+<span class="nc" id="L143">            throw new IllegalArgumentException(&quot;something else bad happened&quot;);</span>
+        }
+    }
+
+    public void deleteRecipeData(String recipeId) {
+
+<span class="nc" id="L149">        mapper.delete(recipeId);</span>
+<span class="nc" id="L150">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

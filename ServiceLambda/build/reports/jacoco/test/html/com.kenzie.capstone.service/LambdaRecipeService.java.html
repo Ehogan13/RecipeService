@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LambdaRecipeService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ServiceLambda</a> &gt; <a href="index.source.html" class="el_package">com.kenzie.capstone.service</a> &gt; <span class="el_source">LambdaRecipeService.java</span></div><h1>LambdaRecipeService.java</h1><pre class="source lang-java linenums">package com.kenzie.capstone.service;
+
+import com.kenzie.capstone.service.dao.RecipeDao;
+import com.kenzie.capstone.service.model.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+public class LambdaRecipeService {
+
+    private RecipeDao recipeDao;
+
+<span class="fc" id="L17">    static final Logger log = LogManager.getLogger();</span>
+
+    @Inject
+<span class="fc" id="L20">    public LambdaRecipeService(RecipeDao recipeDao) {</span>
+<span class="fc" id="L21">        this.recipeDao = recipeDao;</span>
+<span class="fc" id="L22">    }</span>
+
+    public RecipeData getRecipeData(String recipeId) {
+
+<span class="fc" id="L26">        List&lt;RecipeRecord&gt; records = recipeDao.getRecipeData(recipeId);</span>
+
+<span class="pc bpc" id="L28" title="1 of 2 branches missed.">        if (records.size() &gt; 0) {</span>
+<span class="nc" id="L29">            return new RecipeData(records.get(0).getRecipeId(), records.get(0).getTitle(), records.get(0).getIngredients(),</span>
+<span class="nc" id="L30">                    records.get(0).getSteps(), records.get(0).getIsGlutenFree(), records.get(0).getIsDairyFree(),</span>
+<span class="nc" id="L31">                    records.get(0).getIsEggFree(), records.get(0).getIsVegetarian(), records.get(0).getIsVegan(), records.get(0).getRatings());</span>
+        }
+<span class="fc" id="L33">        return null;</span>
+    }
+
+    public RecipeResponse setRecipeData(RecipeRequest recipeRequest) {
+
+<span class="fc" id="L38">        String recipeId = UUID.randomUUID().toString();</span>
+<span class="fc" id="L39">        RecipeRecord recipeRecord =  new RecipeRecord();</span>
+<span class="fc" id="L40">        recipeRecord.setRecipeId(recipeId);</span>
+<span class="fc" id="L41">        recipeRecord.setTitle(recipeRequest.getTitle());</span>
+<span class="fc" id="L42">        recipeRecord.setIngredients(recipeRequest.getIngredients());</span>
+<span class="fc" id="L43">        recipeRecord.setSteps(recipeRequest.getSteps());</span>
+<span class="fc" id="L44">        recipeRecord.setIsDairyFree(recipeRequest.isDairyFree());</span>
+<span class="fc" id="L45">        recipeRecord.setIsGlutenFree(recipeRequest.isGlutenFree());</span>
+<span class="fc" id="L46">        recipeRecord.setIsEggFree(recipeRequest.isEggFree());</span>
+<span class="fc" id="L47">        recipeRecord.setIsVegetarian(recipeRequest.isVegetarian());</span>
+<span class="fc" id="L48">        recipeRecord.setIsVegan(recipeRequest.isVegan());</span>
+<span class="fc" id="L49">        recipeRecord.setRatings(recipeRequest.getRatings());</span>
+
+<span class="fc" id="L51">        recipeDao.setRecipeData(recipeRecord);</span>
+
+<span class="fc" id="L53">        RecipeResponse recipeResponse = new RecipeResponse(recipeId, recipeRequest.getTitle(), recipeRequest.getIngredients(),</span>
+<span class="fc" id="L54">                recipeRequest.getSteps(), recipeRequest.isGlutenFree(), recipeRequest.isDairyFree(), recipeRequest.isEggFree(),</span>
+<span class="fc" id="L55">                recipeRequest.isVegetarian (), recipeRequest.isVegan(), recipeRequest.getRatings());</span>
+
+<span class="fc" id="L57">        return recipeResponse;</span>
+    }
+
+    public List&lt;RecipeData&gt; getRecipesByDietaryRestriction(DietaryRestrictionData data){
+<span class="fc" id="L61">        List&lt;RecipeRecord&gt; records = recipeDao.getRecipesByDietaryRestriction(data);</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">        if (records.size() &gt; 0) {</span>
+<span class="nc" id="L63">            List&lt;RecipeData&gt; recipeDataList = new ArrayList&lt;&gt;();</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">            for (RecipeRecord recipeRecord : records){</span>
+<span class="nc" id="L65">                recipeDataList.add(recipeRecordToRecipeData(recipeRecord));</span>
+<span class="nc" id="L66">            }</span>
+<span class="nc" id="L67">            return recipeDataList;</span>
+        }
+<span class="fc" id="L69">        return null;</span>
+    }
+
+    public RecipeResponse updateRecipeData(RecipeUpdateRequestLambda recipeRequest){
+<span class="fc" id="L73">        RecipeRecord recipeRecord = new RecipeRecord();</span>
+<span class="fc" id="L74">        recipeRecord.setRecipeId(recipeRequest.getRecipeId());</span>
+<span class="fc" id="L75">        recipeRecord.setTitle(recipeRequest.getTitle());</span>
+<span class="fc" id="L76">        recipeRecord.setIngredients(recipeRequest.getIngredients());</span>
+<span class="fc" id="L77">        recipeRecord.setSteps(recipeRequest.getSteps());</span>
+<span class="fc" id="L78">        recipeRecord.setIsDairyFree(recipeRequest.isDairyFree());</span>
+<span class="fc" id="L79">        recipeRecord.setIsGlutenFree(recipeRequest.isGlutenFree());</span>
+<span class="fc" id="L80">        recipeRecord.setIsEggFree(recipeRequest.isEggFree());</span>
+<span class="fc" id="L81">        recipeRecord.setIsVegetarian(recipeRequest.isVegetarian());</span>
+<span class="fc" id="L82">        recipeRecord.setIsVegan(recipeRequest.isVegan());</span>
+<span class="fc" id="L83">        recipeRecord.setRatings(recipeRequest.getRatings());</span>
+
+<span class="fc" id="L85">        recipeDao.updateRecipeData(recipeRecord);</span>
+
+<span class="fc" id="L87">        RecipeResponse recipeResponse = new RecipeResponse(recipeRequest.getRecipeId(), recipeRequest.getTitle(), recipeRequest.getIngredients(),</span>
+<span class="fc" id="L88">                recipeRequest.getSteps(), recipeRequest.isGlutenFree(), recipeRequest.isDairyFree(), recipeRequest.isEggFree(),</span>
+<span class="fc" id="L89">                recipeRequest.isVegetarian (), recipeRequest.isVegan(), recipeRequest.getRatings());</span>
+
+<span class="fc" id="L91">        return recipeResponse;</span>
+    }
+
+    public void deleteRecipeData(String recipeId) {
+
+<span class="fc" id="L96">        recipeDao.deleteRecipeData(recipeId);</span>
+<span class="fc" id="L97">    }</span>
+
+    //helper functions
+
+    private RecipeData recipeRecordToRecipeData(RecipeRecord record){
+<span class="nc" id="L102">        RecipeData data = new RecipeData();</span>
+<span class="nc" id="L103">        data.setRecipeId(record.getRecipeId());</span>
+<span class="nc" id="L104">        data.setTitle(record.getTitle());</span>
+<span class="nc" id="L105">        data.setIngredients(record.getIngredients());</span>
+<span class="nc" id="L106">        data.setSteps(record.getSteps());</span>
+<span class="nc" id="L107">        data.setIsGlutenFree(record.getIsGlutenFree());</span>
+<span class="nc" id="L108">        data.setIsDairyFree(record.getIsDairyFree());</span>
+<span class="nc" id="L109">        data.setIsEggFree(record.getIsEggFree());</span>
+<span class="nc" id="L110">        data.setIsVegetarian(record.getIsVegetarian());</span>
+<span class="nc" id="L111">        data.setIsVegan(record.getIsVegan());</span>
+<span class="nc" id="L112">        data.setRatings(record.getRatings());</span>
+<span class="nc" id="L113">        return data;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

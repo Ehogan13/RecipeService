@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.kenzie.appserver.service.RecipeServiceTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2023-04-10T16:22:45" hostname="Elizabeths-MacBook-Pro.local" time="0.449">
+  <properties/>
+  <testcase name="addNewRecipe_emptyTitle_throwsNewResponseStatusException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.324"/>
+  <testcase name="UpdateRecipe_InvalidRating_ThrowsNewIllegalArgumentException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.006"/>
+  <testcase name="updateRecipe()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.034"/>
+  <testcase name="UpdateRecipe_EmptyRecipeId_ThrowsNewIllegalArgumentException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.007"/>
+  <testcase name="addNewRecipe()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.002"/>
+  <testcase name="DeleteById_RecipeDeleted()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.009"/>
+  <testcase name="findByDietaryRestriction()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.006"/>
+  <testcase name="findById_getFromCache()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.002"/>
+  <testcase name="UpdateRecipe_NullRating_ThrowsNewIllegalArgumentException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.002"/>
+  <testcase name="findById_idNull_throwNewIllegalArgumentException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.002"/>
+  <testcase name="findById_getFromLambda()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.005"/>
+  <testcase name="findById_idEmpty_throwNewIllegalArgumentException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.004"/>
+  <testcase name="UpdateRecipe_NullRecipeId_ThrowsNewIllegalArgumentException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.003"/>
+  <testcase name="addNewRecipe_nullTitle_throwsNewResponseStatusException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.003"/>
+  <testcase name="DeleteById_IdNull_ThrowsNewIllegalArgumentException()" classname="com.kenzie.appserver.service.RecipeServiceTest" time="0.006"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

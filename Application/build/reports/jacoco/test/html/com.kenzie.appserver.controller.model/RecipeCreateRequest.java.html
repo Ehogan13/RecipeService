@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RecipeCreateRequest.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Application</a> &gt; <a href="index.source.html" class="el_package">com.kenzie.appserver.controller.model</a> &gt; <span class="el_source">RecipeCreateRequest.java</span></div><h1>RecipeCreateRequest.java</h1><pre class="source lang-java linenums">package com.kenzie.appserver.controller.model;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
+
+<span class="fc" id="L8">public class RecipeCreateRequest {</span>
+
+    @NotEmpty
+    @JsonProperty(&quot;title&quot;)
+    private String title;
+
+    @NotEmpty
+    @JsonProperty(&quot;ingredients&quot;)
+    private List&lt;String&gt; ingredients;
+
+    @NotEmpty
+    @JsonProperty(&quot;steps&quot;)
+    private List&lt;String&gt; steps;
+
+    @NotEmpty
+    @JsonProperty(&quot;isGlutenFree&quot;)
+    private boolean isGlutenFree;
+
+    @NotEmpty
+    @JsonProperty(&quot;isDairyFree&quot;)
+    private boolean isDairyFree;
+
+    @NotEmpty
+    @JsonProperty(&quot;isEggFree&quot;)
+    private boolean isEggFree;
+
+    @NotEmpty
+    @JsonProperty(&quot;isVegetarian&quot;)
+    private boolean isVegetarian;
+
+    @NotEmpty
+    @JsonProperty(&quot;isVegan&quot;)
+    private boolean isVegan;
+
+    public String getTitle() {
+<span class="fc" id="L43">        return title;</span>
+    }
+
+    public void setTitle(String title) {
+<span class="fc" id="L47">        this.title = title;</span>
+<span class="fc" id="L48">    }</span>
+
+    public List&lt;String&gt; getIngredients() {
+<span class="fc" id="L51">        return ingredients;</span>
+    }
+
+    public void setIngredients(List&lt;String&gt; ingredients) {
+<span class="fc" id="L55">        this.ingredients = ingredients;</span>
+<span class="fc" id="L56">    }</span>
+
+    public List&lt;String&gt; getSteps() {
+<span class="fc" id="L59">        return steps;</span>
+    }
+
+    public void setSteps(List&lt;String&gt; steps) {
+<span class="fc" id="L63">        this.steps = steps;</span>
+<span class="fc" id="L64">    }</span>
+
+    public boolean isGlutenFree() {
+<span class="fc" id="L67">        return isGlutenFree;</span>
+    }
+
+    public void setIsGlutenFree(boolean glutenFree) {
+<span class="fc" id="L71">        isGlutenFree = glutenFree;</span>
+<span class="fc" id="L72">    }</span>
+
+    public boolean isDairyFree() {
+<span class="fc" id="L75">        return isDairyFree;</span>
+    }
+
+    public void setIsDairyFree(boolean dairyFree) {
+<span class="fc" id="L79">        isDairyFree = dairyFree;</span>
+<span class="fc" id="L80">    }</span>
+
+    public boolean isEggFree() {
+<span class="fc" id="L83">        return isEggFree;</span>
+    }
+
+    public void setIsEggFree(boolean eggFree) {
+<span class="fc" id="L87">        isEggFree = eggFree;</span>
+<span class="fc" id="L88">    }</span>
+
+    public boolean isVegetarian() {
+<span class="fc" id="L91">        return isVegetarian;</span>
+    }
+
+    public void setIsVegetarian(boolean vegetarian) {
+<span class="fc" id="L95">        isVegetarian = vegetarian;</span>
+<span class="fc" id="L96">    }</span>
+
+    public boolean isVegan() {
+<span class="fc" id="L99">        return isVegan;</span>
+    }
+
+    public void setIsVegan(boolean vegan) {
+<span class="fc" id="L103">        isVegan = vegan;</span>
+<span class="fc" id="L104">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
